@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import cors from 'cors';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import memberRoute from './routes/memberRoute.js';
 
@@ -11,7 +11,11 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
-// app.use(cors());
+app.use(cors({
+    origin:["http://localhost:8080","http://127.0.0.1:8080"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 app.use(memberRoute);
 
 app.listen(port, () => {
