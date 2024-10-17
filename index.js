@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import memberRoute from './routes/memberRoute.js';
+import roomRoute from './routes/roomRoute.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(memberRoute);
+app.use(roomRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
