@@ -53,7 +53,7 @@ export async function login(req, res) {
     const bodyData = req.body;
     try{
         if(req.body.loginName == null || req.body.password == null){
-            return res.json({error:"Email and Password is required"});
+            return res.json({messagelogin:"fail"});
         }
 
         const existsResult = await database.query({
@@ -62,7 +62,7 @@ export async function login(req, res) {
         })
 
         if(!existsResult.rows[0].exists){
-            return res.json({messageLogin:"Login Fail!!!"});
+            return res.json({messagelogin:"fail"});
         }
 
         const result = await database.query({
@@ -72,14 +72,13 @@ export async function login(req, res) {
 
         const loginOK = await bcrypt.compare(req.body.password, result.rows[0].passwordHash);
 
-        if(loginOK)
-            return res.json({messageLogin:"Login Success!!!"});
+        if(loginOK){
+            console.log("Correct");
+            return res.json({messagelogin:"success"});}
         else
-            return res.json({messageLogin:"Login Fail!!!"});
+            return res.json({messagelogin:"fail"});
     }
     catch(err){
-        return res.json({
-            error:err.message
-        })
+        return res.json({messagelogin:err.message})
     }
 }
