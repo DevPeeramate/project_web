@@ -36,6 +36,23 @@ export async function addRoom(req, res) {
     }       
 }
 
+// export async function putRoom(req, res) {
+//     console.log("PUT /room is requested");
+//     const bodyData = req.body;
+//     const result = await database.query({
+//         text:`UPDATE "public"."earthrooms" SET "roomName" = $1, "roomSize" = $2, "roomDescription" = $3 WHERE "earthRoomId" = $4`,
+//         values:[
+//             req.bodyData.roomName, 
+//             req.bodyData.roomSize, 
+//             req.bodyData.roomDescription, 
+//             req.params.earthRoomId
+//         ]
+//     })
+//     const datetime = new Date();
+//     bodyData.updateDate = datetime;
+//     res.status(201).json(bodyData);
+// }
+
 export async function getSearchRoom(req, res) {
     console.log("GET /searchroom is requested");
 

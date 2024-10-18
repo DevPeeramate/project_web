@@ -7,9 +7,7 @@ export async function register(req, res) {
 
     try {
         if(req.body.memEmail == null || req.body.memName == null){
-            return res.status(422).json({
-                error:"Email and Name is required"
-            })
+            return res.json({messageRegister:"fail"})
         }
         console.log("Error 1")
         const existsResult = await database.query({
@@ -18,11 +16,9 @@ export async function register(req, res) {
         })
         console.log("Error 2")
         if(existsResult.rows[0].exists){
-            return res.status(409).json({
-                error:`memEmail ${req.body.memEmail} is already exists`
-            })
+            return res.json({messageRegister:"fail"})
         }
-        
+        console.log("Error 3")
         const thePassword = req.body.password;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(thePassword, saltRounds);
@@ -39,12 +35,11 @@ export async function register(req, res) {
 
         const datetime = new Date();
         bodyData.createDate = datetime;
-        res.status(201).json(bodyData);
+        return res.json({messageRegister:"success"})
     }
     catch(err){
-        return res.status(500).json({
-            error:err.message
-        })
+        console.log("Error 4");
+        return res.json({messageRegister:"fail"})
     }
 }
 
