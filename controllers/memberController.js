@@ -1,6 +1,18 @@
 import database from "../service/database.js";
 import bcrypt from 'bcrypt';
 
+
+export async function getSession(req, res) {
+    console.log("GET /session is requested");
+    console.log(req.session);
+    const theData = {
+        email: req.session.memEmail,
+        name: req.session.memName,
+        role: req.session.role
+    }
+    console.log
+    return res.json(theData);
+}
 export async function register(req, res) {
     console.log("POST /members is requested");
     const bodyData = req.body;
@@ -69,6 +81,9 @@ export async function login(req, res) {
 
         if(loginOK){
             console.log("Correct");
+            req.session.memEmail = result.rows[0].memEmail;
+            req.session.memName = result.rows[0].memName;
+            req.session.role = result.rows[0].role;
             return res.json({messagelogin:"success"});}
         else
             return res.json({messagelogin:"fail"});
@@ -82,6 +97,8 @@ export async function logout(req, res) {
     console.log("GET /logout is requested");
 
     try{
+        req.session.destroy();
+        res.clearCookie("connect.sid");
         return res.json({messageLogout:"success"});
     }
     catch(err){
