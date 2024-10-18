@@ -77,3 +77,14 @@ export async function login(req, res) {
         return res.json({messagelogin:err.message})
     }
 }
+
+export async function logout(req, res) {
+    console.log("GET /logout is requested");
+
+    try{
+        return res.json({messageLogout:"success"});
+    }
+    catch(err){
+        return res.json({messageLogout:"fail"});
+    }
+}
