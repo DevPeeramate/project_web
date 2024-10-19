@@ -72,6 +72,18 @@ export async function getSearchRoom(req, res) {
     }
 }
 
+export async function getRoomById(req, res) {
+    console.log("GET /room/:id is requested");
+    try {
+        const result = await database.query({
+            text:`SELECT * FROM earthrooms WHERE "earthRoomId" = $1`,
+            values:[req.params.id]
+        })
+        res.status(200).json(result.rows);
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
 // export async function getRoom(req, res) {  
 //     console.log("GET /room is requested");
 

@@ -10,7 +10,7 @@ export async function getSession(req, res) {
         name: req.session.memName,
         role: req.session.role
     }
-    console.log
+    // console.log
     return res.json(theData);
 }
 export async function register(req, res) {
@@ -60,7 +60,7 @@ export async function login(req, res) {
     const bodyData = req.body;
     try{
         if(req.body.loginName == null || req.body.password == null){
-            return res.json({messagelogin:"fail"});
+            return res.json({messageLogin:"fail"});
         }
 
         const existsResult = await database.query({
@@ -69,7 +69,7 @@ export async function login(req, res) {
         })
 
         if(!existsResult.rows[0].exists){
-            return res.json({messagelogin:"fail"});
+            return res.json({messageLogin:"fail"});
         }
 
         const result = await database.query({
@@ -84,12 +84,12 @@ export async function login(req, res) {
             req.session.memEmail = result.rows[0].memEmail;
             req.session.memName = result.rows[0].memName;
             req.session.role = result.rows[0].role;
-            return res.json({messagelogin:"success"});}
+            return res.json({messageLogin:"success"});}
         else
-            return res.json({messagelogin:"fail"});
+            return res.json({messageLogin:"fail"});
     }
     catch(err){
-        return res.json({messagelogin:err.message})
+        return res.json({messageLogin:err.message})
     }
 }
 

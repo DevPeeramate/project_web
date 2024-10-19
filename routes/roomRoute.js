@@ -5,5 +5,6 @@ const router = express.Router();
 router.post('/admin/addRoom', roomC.addRoom);
 router.put('/admin/putRoom/:id', roomC.putRoom);
 router.get('/admin/searchroom/', roomC.getSearchRoom);
+router.get('/admin/room/:id', roomC.getRoomById);
 
 export default router
