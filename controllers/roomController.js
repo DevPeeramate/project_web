@@ -74,12 +74,22 @@ export async function getSearchRoom(req, res) {
 
 export async function getRoomById(req, res) {
     console.log("GET /room/:id is requested");
+
     try {
-        const result = await database.query({
-            text:`SELECT * FROM earthrooms WHERE "earthRoomId" = $1`,
-            values:[req.params.id]
-        })
-        res.status(200).json(result.rows);
+        if(!req.params.id){   
+            const result = await database.query({
+                text:`SELECT * FROM earthrooms`
+            })
+            res.status(200).json(result.rows);
+        }
+        else{
+            const result = await database.query({
+                text:`SELECT * FROM earthrooms WHERE "earthRoomId" = $1`,
+                values:[req.params.id]
+            })
+            res.status(200).json(result.rows);
+        }
+        
     } catch (error) {
         return res.status(500).json({error: error.message});
     }
@@ -97,3 +107,28 @@ export async function getAllRoom(req, res) {
         return res.status(500).json({error: error.message});
     }
 }
+
+export async function PaginationRoom(req, res) {
+    console.log("GET /PaginationRoom is requested");
+    try{
+        const result = await database.query({
+            text:`SELECT * FROM earthrooms`
+        })
+        const numberPerPage = 2;
+        const totalPage = Math.ceil(result.rows.length / numberPerPage);
+        // console.log(Math.ceil(totalPage));
+        const page = parseInt(req.params.page);
+        if(page < 1 || !page || page > totalPage){
+            return res.status(404).json({message: "Page not found"});
+        }
+
+        const start = (page - 1) * numberPerPage;
+        const end = start + numberPerPage;  
+        const resultData = result.rows.slice(start, end);
+        res.status(200).json(resultData);
+    }
+    catch(error){
+        return res.status(500).json({error: error.message});
+    }
+}
+    
