@@ -84,15 +84,16 @@ export async function getRoomById(req, res) {
         return res.status(500).json({error: error.message});
     }
 }
-// export async function getRoom(req, res) {  
-//     console.log("GET /room is requested");
 
-//     try {
-//         const result = await database.query({
-//             text:`SELECT * FROM earthrooms LIMIT 5`
-//         })
-//         res.status(200).json(result.rows);
-//     } catch (error) {
-//         return res.status(500).json({error: error.message});
-//     }
-// }
+export async function getAllRoom(req, res) {  
+    console.log("GET /AllRoom is requested");
+
+    try {
+        const result = await database.query({
+            text:`SELECT * FROM earthrooms`
+        })
+        res.status(200).json(result.rows);
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
