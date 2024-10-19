@@ -7,7 +7,7 @@ export async function addRoom(req, res) {
     try {
         for (let i = 0; i < roomData.length; i++) {
             if(req.body[roomData[i]] == null){
-                return res.status(422).json({error: `${roomData[i]} is required`});
+                return res.json({messageAddRoom: `fail`});
             }
         }
         const existsResult = await database.query({
@@ -15,7 +15,7 @@ export async function addRoom(req, res) {
             values:[req.body.earthRoomId]
         })
         if(existsResult.rows[0].exists){ 
-            return res.status(409).json({error: `earthRoomId ${req.body.earthRoomId} is already exists`});
+            return res.json({messageAddRoom: `fail`});
         }
         const result = await database.query({
             text:`INSERT INTO earthrooms("earthRoomId","floor","roomName","roomSize","roomDescription")
@@ -30,9 +30,9 @@ export async function addRoom(req, res) {
         })
         const datetime = new Date();
         bodyData.createDate = datetime;
-        res.status(201).json(bodyData);
+        return res.json({messageAddRoom: `success`});
     } catch (error) {
-        return res.status(500).json({error: error.message});
+        return res.json({messageAddRoom: `fail`});
     }       
 }
 
