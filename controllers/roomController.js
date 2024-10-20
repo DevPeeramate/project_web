@@ -26,7 +26,7 @@ export async function uploadRoomImage(req, res) {
 export async function addRoom(req, res) {
     console.log("POST /room is requested");
     const bodyData = req.body;
-    const roomData = ["earthRoomId","floor", "roomName", "roomSize" ];
+    const roomData = ["earthRoomId","floor", "roomName", "roomSize" ,"roomDescription","roomPrice","roomStatus"];
     try {
         for (let i = 0; i < roomData.length; i++) {
             if(req.body[roomData[i]] == null){
@@ -41,14 +41,16 @@ export async function addRoom(req, res) {
             return res.json({messageAddRoom: `fail`});
         }
         const result = await database.query({
-            text:`INSERT INTO earthrooms("earthRoomId","floor","roomName","roomSize","roomDescription")
-            VALUES ($1,$2,$3,$4,$5)`,
+            text:`INSERT INTO earthrooms("earthRoomId","floor","roomName","roomSize","roomDescription","roomPrice","roomStatus")
+            VALUES ($1,$2,$3,$4,$5,$6,$7)`,
             values:[
                 req.body.earthRoomId, 
                 req.body.floor, 
                 req.body.roomName, 
                 req.body.roomSize, 
-                req.body.roomDescription
+                req.body.roomDescription,
+                req.body.roomPrice,
+                req.body.roomStatus
             ]
         })
         const datetime = new Date();
@@ -63,29 +65,37 @@ export async function putRoom(req, res) {
     console.log("PUT /room is requested");
     const bodyData = req.body;
     console.log(req.body);
+    const roomData = ["roomName", "roomSize" ,"roomDescription","roomPrice","roomStatus"];
     try {
-        if(req.body.roomName != null && req.body.roomSize != null) {
-            const result = await database.query({
-                text:`UPDATE earthrooms SET 
-                "roomName" = $1, 
-                "roomSize" = $2, 
-                "roomDescription" = $3 
-                WHERE "earthRoomId" = $4`,
-                values:[
-                    req.body.roomName, 
-                    req.body.roomSize, 
-                    req.body.roomDescription, 
-                    req.params.id
-                ]
-            })
-            const datetime = new Date();
-            bodyData.updateDate = datetime;
-            console.log("success");
-            return res.json({messagePutRoom: `success`});
+        for (let i = 0; i < roomData.length; i++) {
+            if(req.body.roomName != null && req.body.roomSize != null && room) {
+                const result = await database.query({
+                    text:`UPDATE earthrooms SET 
+                    "roomName" = $1, 
+                    "roomSize" = $2, 
+                    "roomDescription" = $3 ,
+                    "roomPrice" = $4,
+                    "roomStatus" = $5
+                    WHERE "earthRoomId" = $6`,
+                    values:[
+                        req.body.roomName, 
+                        req.body.roomSize, 
+                        req.body.roomDescription,
+                        req.body.roomPrice,
+                        req.body.roomStatus, 
+                        req.params.id
+                    ]
+                })
+                const datetime = new Date();
+                bodyData.updateDate = datetime;
+                console.log("success");
+                return res.json({messagePutRoom: `success`});
+            }
+            else {
+                return res.json({messagePutRoom: `fail`});
+            }
         }
-        else {
-            return res.json({messagePutRoom: `fail`});
-        }
+        
     } catch (error) {
         return res.json({messagePutRoom: `fail`});
     }
