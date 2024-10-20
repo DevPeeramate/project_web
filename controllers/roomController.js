@@ -1,5 +1,26 @@
 import database from "../service/database.js";
+import multer from "multer";
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'img_room')
+    },
+    filename: function (req, file, cb) {
+        const filename = `${req.body.roomName}.jpg`;
+        cb(null, filename)
+    }
+})
+
+const upload = multer({ storage: storage }).single('file');
+
+export async function uploadRoomImage(req, res) {
+    upload(req,res,(err) => {
+        if(err){
+            return res.json({messageUploadRoom: `fail`});
+        }
+        return res.json({messageUploadRoom: `success`});
+    })
+}
 export async function addRoom(req, res) {
     console.log("POST /room is requested");
     const bodyData = req.body;
