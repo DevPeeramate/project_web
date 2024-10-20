@@ -60,23 +60,34 @@ export async function addRoom(req, res) {
 export async function putRoom(req, res) {
     console.log("PUT /room is requested");
     const bodyData = req.body;
-    const result = await database.query({
-        text:`UPDATE earthrooms SET 
-        "roomName" = $1, 
-        "roomSize" = $2, 
-        "roomDescription" = $3 
-        WHERE "earthRoomId" = $4`,
-        values:[
-            req.body.roomName, 
-            req.body.roomSize, 
-            req.body.roomDescription, 
-            req.params.id
-        ]
-    })
-    const datetime = new Date();
-    bodyData.updateDate = datetime;
-    console.log("success");
-    res.status(201).json(bodyData);
+    console.log(req.body);
+    try {
+        if(req.body.roomName != null && req.body.roomSize != null) {
+            const result = await database.query({
+                text:`UPDATE earthrooms SET 
+                "roomName" = $1, 
+                "roomSize" = $2, 
+                "roomDescription" = $3 
+                WHERE "earthRoomId" = $4`,
+                values:[
+                    req.body.roomName, 
+                    req.body.roomSize, 
+                    req.body.roomDescription, 
+                    req.params.id
+                ]
+            })
+            const datetime = new Date();
+            bodyData.updateDate = datetime;
+            console.log("success");
+            return res.status(201).json(bodyData);
+        }
+        else {
+            return res.json({messagePutRoom: `fail`});
+        }
+    } catch (error) {
+        return res.json({messagePutRoom: `fail`});
+    }
+    
 }
 
 export async function getSearchRoom(req, res) {
