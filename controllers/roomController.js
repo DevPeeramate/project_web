@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, 'img_room')
     },
     filename: function (req, file, cb) {
-        const filename = `${req.body.roomName}.jpg`;
+        const filename = `${req.params.id}.jpg`;
         cb(null, filename)
     }
 })
@@ -14,10 +14,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('file');
 
 export async function uploadRoomImage(req, res) {
+    console.log(req.params.id);
     upload(req,res,(err) => {
         if(err){
             return res.json({messageUploadRoom: `fail`});
         }
+        
         return res.json({messageUploadRoom: `success`});
     })
 }
