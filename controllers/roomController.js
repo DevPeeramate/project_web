@@ -79,7 +79,7 @@ export async function putRoom(req, res) {
             const datetime = new Date();
             bodyData.updateDate = datetime;
             console.log("success");
-            return res.status(201).json(bodyData);
+            return res.json({messagePutRoom: `success`});
         }
         else {
             return res.json({messagePutRoom: `fail`});
