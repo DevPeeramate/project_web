@@ -68,35 +68,40 @@ export async function putRoom(req, res) {
     const roomData = ["roomName", "roomSize" ,"roomDescription","roomPrice","roomStatus"];
     try {
         for (let i = 0; i < roomData.length; i++) {
-            if(req.body.roomName != null && req.body.roomSize != null && room) {
-                const result = await database.query({
-                    text:`UPDATE earthrooms SET 
-                    "roomName" = $1, 
-                    "roomSize" = $2, 
-                    "roomDescription" = $3 ,
-                    "roomPrice" = $4,
-                    "roomStatus" = $5
-                    WHERE "earthRoomId" = $6`,
-                    values:[
-                        req.body.roomName, 
-                        req.body.roomSize, 
-                        req.body.roomDescription,
-                        req.body.roomPrice,
-                        req.body.roomStatus, 
-                        req.params.id
-                    ]
-                })
-                const datetime = new Date();
-                bodyData.updateDate = datetime;
-                console.log("success");
-                return res.json({messagePutRoom: `success`});
-            }
-            else {
+            console.log(req.body[roomData[i]]);
+            if(req.body[roomData[i]] == null){
+                console.log(req.body[roomData[i]]);
                 return res.json({messagePutRoom: `fail`});
             }
         }
         
+            const result = await database.query({
+                text:`UPDATE earthrooms SET 
+                "roomName" = $1, 
+                "roomSize" = $2, 
+                "roomDescription" = $3 ,
+                "roomPrice" = $4,
+                "roomStatus" = $5
+                WHERE "earthRoomId" = $6`,
+                values:[
+                    req.body.roomName, 
+                    req.body.roomSize, 
+                    req.body.roomDescription,
+                    req.body.roomPrice,
+                    req.body.roomStatus, 
+                    req.params.id
+                ]
+            })
+            const datetime = new Date();
+            bodyData.updateDate = datetime;
+            console.log("success");
+            return res.json({messagePutRoom: `success`});
+        // else {
+        //     return res.json({messagePutRoom: `fail`});
+        // }
+        
     } catch (error) {
+        console.log(error);
         return res.json({messagePutRoom: `fail`});
     }
     
