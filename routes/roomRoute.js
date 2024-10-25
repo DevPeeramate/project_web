@@ -5,9 +5,9 @@ const router = express.Router();
 router.post('/admin/addRoom', roomC.addRoom);
 router.put('/admin/putRoom/:id', roomC.putRoom);
 router.post('/admin/uploadRoomImage/:id', roomC.uploadRoomImage);
-router.get('/admin/AllRoom', roomC.getAllRoom);
+router.get('/admin/AllRoom', roomC.searchAllRoom);
 router.get('/admin/PaginationRoom/:page', roomC.PaginationRoom);
-router.get('/admin/searchroom/', roomC.getSearchRoom);
+router.get('/admin/searchRoom/', roomC.searchRoom);
 router.get('/admin/room/:id?', roomC.getRoomById);
 
 
