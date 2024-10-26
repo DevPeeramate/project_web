@@ -92,3 +92,28 @@ export async function getReservation(req, res) {
         return res.json({ messageGetReservation: "fail" });
     }
 }
+
+export async function deleteReservation(req, res) {
+    console.log("DELETE /reservation is requested");
+    try {
+
+        const existsResult = await database.query({
+            text: `SELECT EXISTS (SELECT * FROM reservations WHERE "bookId" = $1)`,
+            values: [req.params.bookId],
+        });
+        if (!existsResult.rows[0].exists) {
+            console.log("fail in exists");
+            return res.json({ messageDeleteReservation: "fail" });
+        }
+
+        const result = await database.query({
+            text: `DELETE FROM reservations WHERE "bookId" = $1`,
+            values: [req.params.bookId],
+        });
+        console.log("success");
+        return res.json({ messageDeleteReservation: "success" });
+    } catch (err) {
+        console.log("Error in catch", err);
+        return res.json({ messageDeleteReservation: "fail" });
+    }
+}

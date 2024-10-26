@@ -220,9 +220,12 @@ export async function searchRoomByType(req, res) {
         //     if(i != 0){
         //         queryText += ` AND `;
         //     }
-        //     queryText += `roomT."roomName" ILIKE $${i+1} `;
+        //     // queryText += `roomT."roomName" ILIKE $${i+1} `;
+        //     if(!req.body.roomId){
+        //         queryText += `room`
+        //     }
         // }
-        
+        // console.log(queryText);
         // if(req.body.roomId != null){
         //     queryText += `room."roomId" = $1 `;
         // }
@@ -251,7 +254,7 @@ export async function searchRoomByType(req, res) {
 // const result = await database.query(query);
 
         console.log("success");
-        res.status(200).json(result.rows);
+        res.status(200).json();
     } catch (error) {
         console.log("Error in catch:",error);
         return res.status(500).json({error: error.message});
