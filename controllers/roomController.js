@@ -156,8 +156,6 @@ export async function putRoom(req, res) {
     
 }
 
-// ไม่ได้ใช้ ?
-// For member
 export async function searchRoom(req, res) {
     console.log("GET /searchRoom/:id is requested");
 
@@ -202,10 +200,44 @@ export async function getRoomById(req, res) {
     }
 }
 
+export async function searchRoomByType(req, res) {
+    console.log("GET /searchRoomByType/:id is requested");
 
+    try {
+        // const result = await database.query({
+        //     text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
+        //         FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
+        //         WHERE roomT."roomName" ILIKE $1 OR room."roomId" ILIKE $2 OR room."floor" = $3 OR room."roomSize" = $4`,
+        //     values:[
+        //         `%${req.body.roomName}%`,
+        //         `%${req.body.roomId}%`,
+        //         req.body.floor,
+        //         req.body.roomSize
+        //     ]
+        // })
 
+        const conditions = [];
 
-// ไม่ได้ใช้ ?
+if (req.body.roomId) conditions.push(`"roomId" = $1`);
+if (req.body.roomName) conditions.push(`"roomName" ILIKE $2`);
+if (req.body.floor) conditions.push(`"floor" = $3`);
+if (req.body.roomSize) conditions.push(`"roomSize" = $4`);
+
+const query = {
+  text: `SELECT * FROM rooms WHERE ${conditions.join(' AND ')}`,
+  values: Object.values(req.body).filter((value) => value !== undefined),
+};
+
+const result = await database.query(query);
+
+        console.log("success");
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.log("Error in catch:",error);
+        return res.status(500).json({error: error.message});
+    }   
+}
+
 export async function searchAllRoom(req, res) {  
     console.log("GET /AllRoom is requested");
 

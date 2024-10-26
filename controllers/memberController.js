@@ -150,3 +150,29 @@ export async function logout(req, res) {
     }
 }
 
+export async function deleteAccount(req, res) {
+    console.log("GET /deleteAccount is requested");
+    try {
+        const existsResult = await database.query({
+            text: 'SELECT EXISTS (SELECT * FROM members WHERE "username" = $1)',
+            values: [req.params.username]
+        })
+        if (!existsResult.rows[0].exists) {
+            console.log("Fail in exists");
+            return res.json({ messageDeleteAccount: "fail" });
+        }
+
+        const result = await database.query({
+            text: `DELETE FROM members WHERE "username" = $1`,
+            values: [req.params.username]
+        });
+        req.session.destroy();
+        res.clearCookie("connect.sid");
+        console.log("Delete OK");
+        return res.json({ messageDeleteAccount: "success" });
+    }
+    catch (err) {
+        console.log("Error in catch", err);
+        return res.json({ messageDeleteAccount: "fail" });
+    }
+}

@@ -9,6 +9,7 @@ router.get('/admin/AllRoom', roomC.searchAllRoom);
 router.get('/admin/PaginationRoom/:page', roomC.PaginationRoom);
 router.get('/admin/searchRoom/:id?', roomC.searchRoom);
 router.get('/admin/room/:id', roomC.getRoomById);
+router.get('/rooms', roomC.searchRoomByType);
 
 
 
