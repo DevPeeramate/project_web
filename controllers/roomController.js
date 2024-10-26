@@ -215,20 +215,40 @@ export async function searchRoomByType(req, res) {
         //         req.body.roomSize
         //     ]
         // })
+        // let queryText = ``;
+        // for (let i = 0; i < Object.keys(req.body).length; i++) {
+        //     if(i != 0){
+        //         queryText += ` AND `;
+        //     }
+        //     queryText += `roomT."roomName" ILIKE $${i+1} `;
+        // }
+        
+        // if(req.body.roomId != null){
+        //     queryText += `room."roomId" = $1 `;
+        // }
+        // if(req.body.roomName != null){
+        //     queryText += `roomT."roomName" ILIKE $2 `;
+        // }
+        // if(req.body.floor != null){
+        //     queryText += `room."floor" = $3 `;
+        // }
+        // if(req.body.roomSize != null){
+        //     queryText += `room."roomSize" = $4 `;
+        // }
 
-        const conditions = [];
+//         const conditions = [];
 
-if (req.body.roomId) conditions.push(`"roomId" = $1`);
-if (req.body.roomName) conditions.push(`"roomName" ILIKE $2`);
-if (req.body.floor) conditions.push(`"floor" = $3`);
-if (req.body.roomSize) conditions.push(`"roomSize" = $4`);
+// if (req.body.roomId) conditions.push(`"roomId" = $1`);
+// if (req.body.roomName) conditions.push(`"roomName" ILIKE $2`);
+// if (req.body.floor) conditions.push(`"floor" = $3`);
+// if (req.body.roomSize) conditions.push(`"roomSize" = $4`);
 
-const query = {
-  text: `SELECT * FROM rooms WHERE ${conditions.join(' AND ')}`,
-  values: Object.values(req.body).filter((value) => value !== undefined),
-};
+// const query = {
+//   text: `SELECT * FROM rooms WHERE ${conditions.join(' AND ')}`,
+//   values: Object.values(req.body).filter((value) => value !== undefined),
+// };
 
-const result = await database.query(query);
+// const result = await database.query(query);
 
         console.log("success");
         res.status(200).json(result.rows);

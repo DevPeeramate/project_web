@@ -77,3 +77,18 @@ export async function addReservation(req, res) {
         return res.json({ messageAddReservation: "fail" });
     }
 }
+
+export async function getReservation(req, res) {
+    console.log("GET /reservation is requested");
+    try {
+        const result = await database.query({
+            text: `SELECT * FROM reservations WHERE "username" = $1`,
+            values: [req.params.username],
+        });
+        console.log("success");
+        return res.json(result.rows);
+    } catch (err) {
+        console.log("Error in catch", err);
+        return res.json({ messageGetReservation: "fail" });
+    }
+}
