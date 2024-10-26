@@ -1,14 +1,39 @@
 import database from "../service/database.js";
 import bcrypt from 'bcrypt';
+import multer from "multer";
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'img_room')
+    },
+    filename: function (req, file, cb) {
+        const filename = `${req.params.id}.jpg`;
+        cb(null, filename)
+    }
+})
+
+const upload = multer({ storage: storage }).single('file');
+
+export async function uploadProfileImage(req, res) {
+    console.log(req.params.id);
+    upload(req,res,(err) => {
+        if(err){
+            return res.json({messageUploadRoom: `fail`});
+        }
+        
+        return res.json({messageUploadRoom: `success`});
+    })
+}
 
 
 export async function getSession(req, res) {
     console.log("GET /session is requested");
     console.log(req.session);
     const theData = {
-        email: req.session.memEmail,
+        username: req.session.username,
         name: req.session.memName,
-        role: req.session.role
+        role: req.session.role,
+        email: req.session.email
     }
     // console.log
     return res.json(theData);
@@ -121,3 +146,4 @@ export async function logout(req, res) {
         return res.json({ messageLogout: "fail" });
     }
 }
+

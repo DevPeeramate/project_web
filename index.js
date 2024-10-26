@@ -12,6 +12,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
+app.use("/img_mem", express.static("img_mem"));
 app.use("/img_room", express.static("img_room"));
 
 const theSecret = process.env.SECRET;

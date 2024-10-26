@@ -48,7 +48,7 @@ export async function addRoom(req, res) {
 
         do{
             existsResult2 = await database.query({
-                text:`SELECT EXISTS (SELECT * FROM "roomTypes" WHERE "roomName" = $1)`,
+                text:`SELECT EXISTS (SELECT * FROM "roomTypes" WHERE "roomName" ILIKE $1)`,
                 values:[req.body.roomName]
             })
             console.log("Before Exists 2");
@@ -106,7 +106,7 @@ export async function putRoom(req, res) {
 
         do{
             existsResult2 = await database.query({
-                text:`SELECT EXISTS (SELECT * FROM "roomTypes" WHERE "roomName" = $1)`,
+                text:`SELECT EXISTS (SELECT * FROM "roomTypes" WHERE "roomName" ILIKE $1)`,
                 values:[req.body.roomName]
             })
             console.log("Before Exists 2");
@@ -191,8 +191,8 @@ export async function getRoomById(req, res) {
             const result = await database.query({
                 text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
                 FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
-                WHERE "roomId" = $1`,
-                values:[req.params.id]
+                WHERE "roomId" LIKE $1`,
+                values:[`%${req.params.id}%`]
             })
             res.status(200).json(result.rows);
         }
