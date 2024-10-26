@@ -192,7 +192,7 @@ export async function getRoomById(req, res) {
             text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
             FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
             WHERE "roomId" LIKE $1`,
-            values:[`%${req.params.id}%`]
+            values:[req.params.id]
         })
     res.status(200).json(result.rows);
 
