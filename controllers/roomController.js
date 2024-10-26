@@ -159,25 +159,7 @@ export async function putRoom(req, res) {
 // ไม่ได้ใช้ ?
 // For member
 export async function searchRoom(req, res) {
-    console.log("GET /searchroom is requested");
-
-    try {
-        const result = await database.query({
-            text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
-                FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
-                WHERE room."roomId" LIKE $1 OR roomT."roomName" ILIKE $1`,
-            values:[`%${req.body.roomId}%`]
-        })
-        console.log("success");
-        res.status(200).json(result.rows);
-    } catch (error) {
-        console.log("Error in catch:",error);
-        return res.status(500).json({error: error.message});
-    }
-}
-
-export async function getRoomById(req, res) {
-    console.log("GET /room/:id is requested");
+    console.log("GET /searchRoom/:id is requested");
 
     try {
         if(!req.params.id){   
@@ -190,19 +172,38 @@ export async function getRoomById(req, res) {
         else{
             const result = await database.query({
                 text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
-                FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
-                WHERE "roomId" LIKE $1`,
+                    FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
+                    WHERE room."roomId" LIKE $1 OR roomT."roomName" ILIKE $1`,
                 values:[`%${req.params.id}%`]
             })
+            console.log("success");
             res.status(200).json(result.rows);
         }
-
-        
     } catch (error) {
         console.log("Error in catch:",error);
         return res.status(500).json({error: error.message});
     }
 }
+
+export async function getRoomById(req, res) {
+    console.log("GET /room/:id is requested");
+    try{
+        const result = await database.query({
+            text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
+            FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
+            WHERE "roomId" LIKE $1`,
+            values:[`%${req.params.id}%`]
+        })
+    res.status(200).json(result.rows);
+
+    } catch (error) {
+        console.log("Error in catch:",error);
+        return res.status(500).json({error: error.message});
+    }
+}
+
+
+
 
 // ไม่ได้ใช้ ?
 export async function searchAllRoom(req, res) {  

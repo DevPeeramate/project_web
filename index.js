@@ -5,6 +5,7 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import memberRoute from './routes/memberRoute.js';
 import roomRoute from './routes/roomRoute.js';
+import reservationRoute from './routes/reservationRoute.js';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(cors({
 }));
 app.use(memberRoute);
 app.use(roomRoute);
+app.use(reservationRoute)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

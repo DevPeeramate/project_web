@@ -4,7 +4,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'img_room')
+        cb(null, 'img_mem')
     },
     filename: function (req, file, cb) {
         const filename = `${req.params.id}.jpg`;
@@ -122,6 +122,9 @@ export async function login(req, res) {
             req.session.username = result.rows[0].username;
             req.session.memName = result.rows[0].memName;
             req.session.role = result.rows[0].role;
+            req.session.gender = result.rows[0].gender;
+            req.session.email = result.rows[0].email;
+            req.session.phone = result.rows[0].phone;
             return res.json({ messageLogin: "success" });
         }
         else
