@@ -130,7 +130,7 @@ export async function getReservation(req, res) {
     console.log("GET /reservation is requested");
     try {
         const result = await database.query({
-            text: `SELECT rs."roomId" , rt."roomName" , rs."checkInDate" , rs."checkOutDate" , rs."totalDay" , rs."totalPrice" FROM reservations rs 
+            text: `SELECT rs."roomId" , rt."roomName" , rooms."floor" , rooms."roomSize" , rs."checkInDate" , rs."checkOutDate" , rs."totalDay" , rs."totalPrice" FROM reservations rs 
                 LEFT JOIN carts ct ON rs."bookId" = ct."bookId"
                 LEFT JOIN rooms ON rs."roomId" = rooms."roomId"
                 LEFT JOIN "roomTypes" rt ON rooms."roomType" = rt."roomType"
