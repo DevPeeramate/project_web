@@ -151,7 +151,7 @@ export async function deleteReservation(req, res) {
     try {
 
         const existsResult = await database.query({
-            text: `SELECT EXISTS (SELECT * FROM reservations WHERE "bookId" = $1)`,
+            text: `SELECT EXISTS (SELECT * FROM carts WHERE "bookId" = $1)`,
             values: [req.params.bookId],
         });
         if (!existsResult.rows[0].exists) {
@@ -160,7 +160,7 @@ export async function deleteReservation(req, res) {
         }
 
         const result = await database.query({
-            text: `DELETE FROM reservations WHERE "bookId" = $1`,
+            text: `DELETE FROM carts WHERE "bookId" = $1`,
             values: [req.params.bookId],
         });
         console.log("success");
