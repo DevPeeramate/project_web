@@ -33,7 +33,9 @@ export async function getSession(req, res) {
         username: req.session.username,
         name: req.session.memName,
         role: req.session.role,
-        email: req.session.email
+        gender: req.session.gender,
+        email: req.session.email,
+        phone: req.session.phone
     }
     // console.log
     return res.json(theData);
