@@ -210,7 +210,7 @@ export async function searchRoomByType(req, res) {
                 LEFT JOIN "roomTypes" rt ON rooms."roomType" = rt."roomType"
                 WHERE (rt."roomName" = $1 OR  $1 IS NULL)
                 AND (rooms."roomSize" = $2 OR $2 IS NULL)
-                AND (floor = $3 OR $3 IS NULL)`,
+                AND (rooms."floor" = $3 OR $3 IS NULL)`,
             values:[
                 req.body.roomName,
                 req.body.roomSize,
