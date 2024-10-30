@@ -4,7 +4,7 @@ import * as roomC from '../controllers/roomController.js';
 const router = express.Router();
 router.post('/admin/addRoom', roomC.addRoom);
 router.put('/admin/putRoom/:id', roomC.putRoom);
-router.post('/admin/uploadRoomImage/:id', roomC.uploadRoomImage);
+router.post('/admin/uploadRoomImage/:id/:roomName', roomC.uploadRoomImage);
 router.get('/admin/AllRoom', roomC.searchAllRoom);
 router.get('/admin/PaginationRoom/:page', roomC.PaginationRoom);
 router.get('/admin/searchRoom/:id?', roomC.searchRoom);
