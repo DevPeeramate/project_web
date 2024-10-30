@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import memberRoute from './routes/memberRoute.js';
 import roomRoute from './routes/roomRoute.js';
 import reservationRoute from './routes/reservationRoute.js';
+import reviewRoute from './routes/reviewRoute.js';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(cors({
 app.use(memberRoute);
 app.use(roomRoute);
 app.use(reservationRoute)
+app.use(reviewRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

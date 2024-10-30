@@ -204,57 +204,22 @@ export async function searchRoomByType(req, res) {
     console.log("GET /searchRoomByType/:id is requested");
 
     try {
-        // const result = await database.query({
-        //     text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
-        //         FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"
-        //         WHERE roomT."roomName" ILIKE $1 OR room."roomId" ILIKE $2 OR room."floor" = $3 OR room."roomSize" = $4`,
-        //     values:[
-        //         `%${req.body.roomName}%`,
-        //         `%${req.body.roomId}%`,
-        //         req.body.floor,
-        //         req.body.roomSize
-        //     ]
-        // })
-        // let queryText = ``;
-        // for (let i = 0; i < Object.keys(req.body).length; i++) {
-        //     if(i != 0){
-        //         queryText += ` AND `;
-        //     }
-        //     // queryText += `roomT."roomName" ILIKE $${i+1} `;
-        //     if(!req.body.roomId){
-        //         queryText += `room`
-        //     }
-        // }
-        // console.log(queryText);
-        // if(req.body.roomId != null){
-        //     queryText += `room."roomId" = $1 `;
-        // }
-        // if(req.body.roomName != null){
-        //     queryText += `roomT."roomName" ILIKE $2 `;
-        // }
-        // if(req.body.floor != null){
-        //     queryText += `room."floor" = $3 `;
-        // }
-        // if(req.body.roomSize != null){
-        //     queryText += `room."roomSize" = $4 `;
-        // }
-
-//         const conditions = [];
-
-// if (req.body.roomId) conditions.push(`"roomId" = $1`);
-// if (req.body.roomName) conditions.push(`"roomName" ILIKE $2`);
-// if (req.body.floor) conditions.push(`"floor" = $3`);
-// if (req.body.roomSize) conditions.push(`"roomSize" = $4`);
-
-// const query = {
-//   text: `SELECT * FROM rooms WHERE ${conditions.join(' AND ')}`,
-//   values: Object.values(req.body).filter((value) => value !== undefined),
-// };
-
-// const result = await database.query(query);
-
+        console.log("Before searchRoomByType");
+        const result = await database.query({
+            text:`SELECT rooms."roomId" , rt."roomName"  , rooms."floor" , rooms."roomSize" , rooms."roomPrice" FROM rooms
+                LEFT JOIN "roomTypes" rt ON rooms."roomType" = rt."roomType"
+                WHERE (rt."roomName" = $1 OR  $1 IS NULL)
+                AND (rooms."roomSize" = $2 OR $2 IS NULL)
+                AND (floor = $3 OR $3 IS NULL)`,
+            values:[
+                req.body.roomName,
+                req.body.roomSize,
+                req.body.floor
+            ]
+        })
+        console.log(result.rows);
         console.log("success");
-        res.status(200).json();
+        res.status(200).json(result.rows);
     } catch (error) {
         console.log("Error in catch:",error);
         return res.status(500).json({error: error.message});
