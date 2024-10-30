@@ -100,7 +100,7 @@ export async function deleteReview(req, res) {
 
         const existsResult = await database.query({
             text: `SELECT * FROM reviews WHERE "reviewId" = $1`,
-            values: [req.body.reviewId],
+            values: [req.params.reviewId],
         });
         if(!existsResult.rows[0]) {
             console.log("fail in exists");
@@ -108,7 +108,7 @@ export async function deleteReview(req, res) {
         }
         const result = await database.query({
             text: `DELETE FROM reviews WHERE "reviewId" = $1`,
-            values: [req.body.reviewId],
+            values: [req.params.reviewId],
         });
         console.log("success");
         return res.json({ messageDeleteReview: "success" });
