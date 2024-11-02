@@ -1,0 +1,561 @@
+openapi: 3.0.0
+info:
+  title: NOVA GALAXY HOTEL API
+  version: 1.0.0
+  description: This is a sample server NOVA_GALAXY server.
+servers:
+  - url: http://localhost:3000
+
+paths:
+# Member
+  /register:
+    post:
+      tags: [Member]
+      summary: Register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/members'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+  /login:
+    post:
+      tags: [Member]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                loginName:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /logout:
+    get:
+      tags: [Member]
+      summary: Logout
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /session:
+    get:
+      tags: [Member]
+      summary: Get session
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /uploadProfileImage/{id}:
+    post:
+      tags: [Member]
+      summary: Upload profile image
+      parameters:
+        - name: id
+          description: Member ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /delete/{username}:
+    delete:
+      tags: [Member]
+      summary: Delete member
+      parameters:
+        - name: username
+          description: Username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+# Reservation
+  /reservation/{username}:
+    get:
+      tags: [Reservation]
+      summary: Get reservation
+      parameters:
+        - name: username
+          description: Username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /reservation:
+    post:
+      tags: [Reservation]
+      summary: Add reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newReservation'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+  /reservation/{id}:
+    delete:
+      tags: [Reservation]
+      summary: Delete reservation
+      parameters:
+        - name: id
+          description: Reservation ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+# Review
+  /review:
+    get:
+      tags: [Review with Admin Role]
+      summary: Get review
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+    post:
+      tags: [Review with User Role]
+      summary: Add review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newReview'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /myReview/{username}:
+    get:
+      tags: [Review with User Role]
+      summary: Get my review
+      parameters:
+        - name: username
+          description: Username
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      tags: [Review with User Role]
+      summary: Update my review
+      parameters:
+        - name: username
+          description: Username
+          in: path
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editReview'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /review/{username}/{reviewId}:
+    delete:
+      tags: [Review with Admin&User Role]
+      summary: Delete my review
+      parameters:
+        - name: username
+          description: Username
+          in: path
+          required: true
+          schema: 
+            type: string
+        - name: reviewId
+          description: Review ID
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+
+  /admin/AllRoom:
+    get:
+      summary: Get all rooms
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+
+# Room with Admin Role
+  /admin/manageRoom:
+    post:
+      tags: [Room with Admin Role]
+      summary: Add a new room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rooms'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+  /admin/manageRoom/{id}:
+    put:
+      tags: [Room with Admin Role]
+      summary: Update a room
+      parameters:
+        - name: id
+          description: Room ID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editRoom'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /admin/uploadRoomImage/{id}/{roomName}:
+    post:
+      tags: [Room with Admin Role]
+      summary: Upload a room image
+      parameters:
+        - name: id
+          description: Room ID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: roomName
+          description: Room name
+          in: path
+          required: true
+          schema:
+            type: string
+      
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /admin/room/{id}:
+    get:
+      tags: [Room with Admin Role]
+      summary: Get a room by ID
+      parameters:
+        - name: id
+          description: Room ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  /admin/searchRoom/{id}?:
+    get:
+      tags: [Room with Admin Role]
+      summary: Get a search room
+      parameters:
+        - name: id
+          description: Room ID
+          in: path
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+# Room with User Role
+  /rooms:
+    post:
+      tags: [Room with User Role]
+      summary: Get all rooms
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+
+
+
+components:
+  schemas:
+    rooms:
+      type: object
+      properties:
+        roomId:
+          type: string
+        floor:
+          type: number
+        roomType:
+          type: string
+        roomSize:
+          type: number
+        roomPrice:
+          type: number
+        roomDetail:
+          type: string
+        roomStatus:
+          type: string
+        roomName:
+          type: string
+    editRoom:
+      type: object
+      properties:
+        roomName:
+          type: string
+        # roomType:
+        #   type: string
+        roomSize:
+          type: number
+        roomPrice:
+          type: number
+        roomDetail:
+          type: string
+        roomStatus:
+          type: string
+    roomTypes:
+      type: object
+      properties:
+        roomType:
+          type: number
+        roomName:
+          type: string
+    members:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        memName:
+          type: string
+        gender:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+    carts:
+      type: object
+      properties:
+        bookId:
+          type: string
+        username:
+          type: string
+        bookCreateDate:
+          type: date
+    reservations:
+      type: object
+      properties:
+        bookId:
+          type: string
+        roomId:
+          type: string
+        checkInDate:
+          type: date
+        checkOutDate:
+          type: date
+        roomStatus:
+          type: string
+        totalDay:
+          type: number
+        totalPrice:
+          type: number
+    newReservation:
+      type: object
+      properties:
+        username:
+          type: string
+        roomId:
+          type: string
+        checkInDate:
+          type: string
+          format: date
+        checkOutDate:
+          type: string
+          format: date
+        totalDay:
+          type: number
+        totalPrice:
+          type: number
+    reviews:
+      type: object
+      properties:
+        reviewId:
+          type: number
+        username:
+          type: string
+        score:
+          type: number
+        comment:
+          type: string
+        reviewDate:
+          type: string
+          format: date
+        updateDate:
+          type: string
+          format: date
+    newReview:
+      type: object
+      properties:
+        username:
+          type: string
+        score:
+          type: number
+        comment:
+          type: string
+    editReview:
+      type: object
+      properties:
+        reviewId:
+          type: number
+        score:
+          type: number
+        comment:
+          type: string
+

@@ -161,7 +161,8 @@ export async function searchRoom(req, res) {
     console.log("GET /searchRoom/:id is requested");
 
     try {
-        if(!req.params.id){   
+        if(!req.params.id || req.params.id == "{id}"){
+            
             const result = await database.query({
                 text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
                 FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType"`
@@ -175,6 +176,7 @@ export async function searchRoom(req, res) {
                     WHERE room."roomId" LIKE $1 OR roomT."roomName" ILIKE $1`,
                 values:[`%${req.params.id}%`]
             })
+            console.log(req.params.id);
             console.log("success");
             res.status(200).json(result.rows);
         }
@@ -229,7 +231,7 @@ export async function searchRoomByType(req, res) {
 
 export async function searchAllRoom(req, res) {  
     console.log("GET /AllRoom is requested");
-
+    console.log(req.session);
     try {
         const result = await database.query({
             text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"

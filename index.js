@@ -7,6 +7,9 @@ import memberRoute from './routes/memberRoute.js';
 import roomRoute from './routes/roomRoute.js';
 import reservationRoute from './routes/reservationRoute.js';
 import reviewRoute from './routes/reviewRoute.js';
+import swaggerUI from 'swagger-ui-express';
+import yaml from 'yaml';
+import fs from 'fs'; 
 
 dotenv.config();
 
@@ -33,6 +36,10 @@ app.use(memberRoute);
 app.use(roomRoute);
 app.use(reservationRoute)
 app.use(reviewRoute);
+
+const swaggerfile = fs.readFileSync('service/swagger.yaml', 'utf8');
+const swaggerDoc = yaml.parse(swaggerfile);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

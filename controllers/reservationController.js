@@ -1,6 +1,6 @@
 import database from "../service/database.js";
 
-
+// ไม่ใช้
 export async function addCart(req, res) {
     console.log("POST /cart is requested");
     const bodyData = req.body;

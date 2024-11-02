@@ -68,12 +68,13 @@ export async function updateReview(req, res) {
             console.log("Fail in null");
             return res.json({ messageUpdateReview: "fail" });
         }
+        
         const existsResult = await database.query({
-            text: `SELECT * FROM reviews WHERE "reviewId" = $1`,
-            values: [req.body.reviewId],
+            text: `SELECT EXISTS (SELECT * FROM reviews WHERE "reviewId" = $1 AND "username" = $2)`,
+            values: [req.body.reviewId, req.params.username],
         });
 
-        if(!existsResult.rows[0]) {
+        if(!existsResult.rows[0].exists) {
             console.log("fail in exists");
             return res.json({ messageUpdateReview: "fail" });
         }
@@ -99,13 +100,22 @@ export async function deleteReview(req, res) {
         }
 
         const existsResult = await database.query({
-            text: `SELECT * FROM reviews WHERE "reviewId" = $1`,
-            values: [req.params.reviewId],
+            text: `SELECT EXISTS (SELECT * FROM reviews WHERE "reviewId" = $1 AND "username" = $2)`,
+            values: [req.params.reviewId, req.params.username],
         });
-        if(!existsResult.rows[0]) {
+        if(!existsResult.rows[0].exists) {
             console.log("fail in exists");
             return res.json({ messageDeleteReview: "fail" });
         }
+        // const checkUser = await database.query({
+        //     text: `SELECT "username" FROM reviews WHERE "reviewId" = $1`,
+        //     values: [req.params.reviewId],
+        // });
+        // if (checkUser.rows[0].username != req.params.username) {
+        //     console.log("fail in checkUser");
+        //     return res.json({ messageDeleteReview: "fail" });
+        // }
+
         const result = await database.query({
             text: `DELETE FROM reviews WHERE "reviewId" = $1`,
             values: [req.params.reviewId],

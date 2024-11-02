@@ -16,12 +16,22 @@ const upload = multer({ storage: storage }).single('file');
 
 export async function uploadProfileImage(req, res) {
     console.log(req.params.id);
+    const result = await database.query({
+        text: `SELECT EXISTS (SELECT * FROM members WHERE "username" = $1)`,
+        values: [req.params.id]
+    })
+
+    if (!result.rows[0].exists) {
+        console.log("fail in exists");
+        return res.json({ messageUploadProfile: `fail` });
+    }
+
     upload(req,res,(err) => {
         if(err){
-            return res.json({messageUploadRoom: `fail`});
+            return res.json({messageUploadProfile: `fail`});
         }
         
-        return res.json({messageUploadRoom: `success`});
+        return res.json({messageUploadProfile: `success`});
     })
 }
 
@@ -91,6 +101,7 @@ export async function register(req, res) {
 export async function login(req, res) {
     console.log("POST /login is requested");
     const bodyData = req.body;
+
     try {
         if (req.body.loginName == null || req.body.password == null) {
             console.log("Fail in null");
@@ -127,6 +138,7 @@ export async function login(req, res) {
             req.session.gender = result.rows[0].gender;
             req.session.email = result.rows[0].email;
             req.session.phone = result.rows[0].phone;
+            console.log(req.session);
             return res.json({ messageLogin: "success" });
         }
         else
