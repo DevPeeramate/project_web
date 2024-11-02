@@ -32,7 +32,7 @@ export async function getAllReview(req, res) {
     try {
         
         const result = await database.query({
-            text: `SELECT * FROM reviews`,
+            text: `SELECT * FROM reviews ORDER BY "reviewId" DESC`,
         });
         console.log("success");
         return res.json(result.rows);
@@ -50,7 +50,7 @@ export async function getMyReview(req, res) {
             return res.json({ messageGetReview: "fail" });
         }
         const result = await database.query({
-            text: `SELECT * FROM reviews WHERE "username" = $1`,
+            text: `SELECT * FROM reviews WHERE "username" = $1 ORDER BY "reviewId" DESC`,
             values: [req.params.username],
         });
         console.log("success");

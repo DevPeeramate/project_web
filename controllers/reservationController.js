@@ -134,7 +134,7 @@ export async function getReservation(req, res) {
                 LEFT JOIN carts ct ON rs."bookId" = ct."bookId"
                 LEFT JOIN rooms ON rs."roomId" = rooms."roomId"
                 LEFT JOIN "roomTypes" rt ON rooms."roomType" = rt."roomType"
-                WHERE ct."username" = $1`,
+                WHERE ct."username" = $1 ORDER BY rs."bookId" DESC`,
             values: [req.params.username],
         });
         
