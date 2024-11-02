@@ -281,9 +281,10 @@ paths:
         '500':
           description: Internal Server Error
 
-
-  /admin/AllRoom:
+# Room
+  /allRoom:
     get:
+      tags: [All Room]
       summary: Get all rooms
       responses:
         '200':

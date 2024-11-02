@@ -213,7 +213,9 @@ export async function searchRoomByType(req, res) {
                 LEFT JOIN "roomTypes" rt ON rooms."roomType" = rt."roomType"
                 WHERE (rt."roomName" = $1 OR  $1 IS NULL)
                 AND (rooms."roomSize" = $2 OR $2 IS NULL)
-                AND (rooms."floor" = $3 OR $3 IS NULL) ORDER BY rooms."roomId" ASC`,
+                AND (rooms."floor" = $3 OR $3 IS NULL) 
+                AND (rooms."roomStatus" != 'In Repair') 
+                ORDER BY rooms."roomId" ASC`,
             values:[
                 req.body.roomName,
                 req.body.roomSize,
@@ -235,7 +237,9 @@ export async function searchAllRoom(req, res) {
     try {
         const result = await database.query({
             text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
-                FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType" ORDER BY room."roomId" ASC`
+                FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType" 
+                WHERE room."roomStatus" != 'In Repair'
+                ORDER BY room."roomId" ASC`
         })
         console.log("success");
         res.status(200).json(result.rows);

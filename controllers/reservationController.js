@@ -103,7 +103,7 @@ export async function addReservation(req, res) {
             values: [theId,req.body.username, currentDate],
         });
         
-        roomStatus = "Full";
+        roomStatus = "อยู่ในการจอง";
         const reservationTable = await database.query({
             text: `INSERT INTO reservations("bookId","roomId","checkInDate","checkOutDate","roomStatus","totalDay","totalPrice") 
                 VALUES ($1,$2,$3,$4,$5,$6,$7)`,
