@@ -231,7 +231,7 @@ export async function searchRoomByType(req, res) {
     }   
 }
 
-export async function searchAllRoom(req, res) {  
+export async function searchAllRoomByUser(req, res) {  
     console.log("GET /AllRoom is requested");
 
     try {
@@ -239,6 +239,22 @@ export async function searchAllRoom(req, res) {
             text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
                 FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType" 
                 WHERE room."roomStatus" != 'In Repair'
+                ORDER BY room."roomId" ASC`
+        })
+        console.log("success");
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.log("Error in catch:",error);
+        return res.status(500).json({error: error.message});
+    }
+}
+export async function searchAllRoomByAdmin(req, res) {  
+    console.log("GET /AllRoom is requested");
+
+    try {
+        const result = await database.query({
+            text:`SELECT room."roomId",room."floor",roomT."roomName",room."roomSize",room."roomPrice",room."roomDetail",room."roomStatus"
+                FROM "rooms" room LEFT JOIN "roomTypes" roomT ON room."roomType" = roomT."roomType" 
                 ORDER BY room."roomId" ASC`
         })
         console.log("success");
