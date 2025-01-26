@@ -13,5 +13,5 @@ Learn about Front-end and Back-end How to connect database understand concept ab
 # How to start
 1. Clone this repo
 ```cmd
-
+git clone https://github.com/DevPeeramate/Web_Technology.git
 ```
