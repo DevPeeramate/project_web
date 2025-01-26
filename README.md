@@ -11,10 +11,7 @@ Learn about Front-end and Back-end How to connect database understand concept ab
 <br>
 
 # How to start
-1.Clone this repo
+1. Clone this repo
 ```cmd
-import pyvista as pv
 
-text = pv.Text3D('Write better\n READMEs!')
-text.plot(cpos='xy')
 ```
