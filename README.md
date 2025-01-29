@@ -11,7 +11,22 @@ Learn about Front-end and Back-end How to connect database understand concept ab
 <br>
 
 # How to start
-1. Clone this repo
+### requirement
+  - PgAdmin
+  - Git
+  - Node.js
+  - Visual Studio Code
+<br>
+
+## 1. Clone this repo
 ```cmd
 git clone https://github.com/DevPeeramate/Web_Technology.git
 ```
+<br>
+
+## 2. Install node_modules in fontend and backend
+```cmd
+npm i 
+```
+
+3.Open PgAdmin
